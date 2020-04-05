@@ -1,0 +1,2 @@
+webclient.timeout: 3
+spring.jackson.serialization.INDENT_OUTPUT: true
