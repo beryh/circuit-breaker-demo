@@ -1,0 +1,17 @@
+plugins {
+    id 'java'
+}
+
+sourceCompatibility = 11
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok:1.18.2'
+    annotationProcessor 'org.projectlombok:lombok:1.18.2'
+}
+
+//bootJar { enabled = false }
+jar { enabled = true }

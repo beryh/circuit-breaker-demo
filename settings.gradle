@@ -1,0 +1,4 @@
+rootProject.name = 'circuit-breaker-demo'
+include 'back-service', 'common'
+include 'common'
+
