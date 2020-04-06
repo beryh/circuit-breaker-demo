@@ -41,6 +41,9 @@ dependencies {
 //        exclude 'micrometer-core'
     }
 
+//    implementation ('org.springframework.boot:spring-boot-starter-actuator')
+    implementation ('io.github.resilience4j:resilience4j-micrometer')
+
 //    implementation 'io.github.resilience4j:resilience4j-micrometer'
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
