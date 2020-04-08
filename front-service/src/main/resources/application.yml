@@ -1,2 +1,14 @@
+server.port: 8888
 webclient.timeout: 3
 spring.jackson.serialization.INDENT_OUTPUT: true
+
+management.health.circuitbreakers.enabled: true
+
+management.endpoints.web.exposure.include: health,circuitbreakers,metrics
+#management.endpoints.web.exposure.include: '*'
+management.endpoint.health.show-details: always
+
+resilience4j.circuitbreaker:
+  configs:
+    default:
+      registerHealthIndicator: true

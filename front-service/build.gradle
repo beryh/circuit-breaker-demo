@@ -37,14 +37,15 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.2'
 
-    implementation ('org.springframework.boot:spring-boot-starter-actuator') {
-//        exclude 'micrometer-core'
-    }
 
-//    implementation ('org.springframework.boot:spring-boot-starter-actuator')
-    implementation ('io.github.resilience4j:resilience4j-micrometer')
+    // add metrics for circuit breakers
+    implementation 'io.github.resilience4j:resilience4j-spring-boot2:1.1.0'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
-//    implementation 'io.github.resilience4j:resilience4j-micrometer'
+//    implementation ('io.github.resilience4j:resilience4j-micrometer')
+
+    implementation 'io.github.resilience4j:resilience4j-metrics:1.1.0'
+
 
     testImplementation('org.springframework.boot:spring-boot-starter-test') {
         exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'

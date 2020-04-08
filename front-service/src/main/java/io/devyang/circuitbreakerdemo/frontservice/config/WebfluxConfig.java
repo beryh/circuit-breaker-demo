@@ -1,6 +1,7 @@
 package io.devyang.circuitbreakerdemo.frontservice.config;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 import io.netty.channel.ChannelOption;
 import io.netty.handler.timeout.ReadTimeoutHandler;
@@ -21,15 +22,15 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 public class WebfluxConfig {
     @Value("${webclient.timeout:5}")
-    private Integer SECONDS;
+    private Integer TIMEOUT;
 
     @Bean
     WebClient.Builder webClientBuilder() {
         TcpClient timeoutClient = TcpClient.create()
-                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, 3000)
+                .option(ChannelOption.CONNECT_TIMEOUT_MILLIS, TIMEOUT * 1000)
                 .doOnConnected(
-                        c -> c.addHandlerLast(new ReadTimeoutHandler(3000, TimeUnit.MILLISECONDS))
-                                .addHandlerLast(new WriteTimeoutHandler(3000, TimeUnit.MILLISECONDS)));
+                        c -> c.addHandlerLast(new ReadTimeoutHandler(TIMEOUT * 1000, TimeUnit.MILLISECONDS))
+                                .addHandlerLast(new WriteTimeoutHandler(TIMEOUT * 1000, TimeUnit.MILLISECONDS)));
         return WebClient.builder()//.baseUrl(YOUR_URL)
                 .baseUrl("http://localhost:9999")
                 .clientConnector(new ReactorClientHttpConnector(HttpClient.from(timeoutClient)))
@@ -37,16 +38,14 @@ public class WebfluxConfig {
     }
 
     @Bean
-    public ReactiveResilience4JCircuitBreakerFactory resilienceConfig() {
+    public ReactiveResilience4JCircuitBreakerFactory resilienceConfig(CircuitBreakerRegistry circuitBreakerRegistry) {
         ReactiveResilience4JCircuitBreakerFactory factory = new ReactiveResilience4JCircuitBreakerFactory();
 
         factory.configureDefault(
                 id -> new Resilience4JConfigBuilder(id)
                         .circuitBreakerConfig(CircuitBreakerConfig.custom().slidingWindow(5, 2, CircuitBreakerConfig.SlidingWindowType.COUNT_BASED).build())
-                        .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(10)).build())
+                        .timeLimiterConfig(TimeLimiterConfig.custom().timeoutDuration(Duration.ofSeconds(TIMEOUT)).build())
                         .build());
-
         return factory;
-
     }
 }
