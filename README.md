@@ -1,14 +1,15 @@
 # circuit-breaker-demo
 ## About CircuitBreaker
- > <img src="https://files.readme.io/39cdd54-state_machine.jpg">
- ```
+ <img src="https://files.readme.io/39cdd54-state_machine.jpg">
+ 
+* https://resilience4j.readme.io/docs/circuitbreaker
 * normal state: CLOSED
 * failure rate를 초과한 경우: OPEN
 * waitDurationInOpenState 로 설정된 시간 이후: HALF_OPEN
 * HALF_OPEN 상태에서 정상동작한다면 CLOSED로, 문제가 지속된다면 OPEN 상태로
-```
 
- > https://resilience4j.readme.io/docs/circuitbreaker
+
+
 
 | Config property                               | Default Value                                                         | Description                                                                                                                                                                                                                                                                                                                                                                                                        |
 |-----------------------------------------------|-----------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
@@ -28,8 +29,9 @@
 
 ## How to run
 * BackService와 FrontService를 실행
- > $ curl http://localhost:8080/test?id={circuit_breaker_name}
-<hr/>
+```
+$ curl http://localhost:8080/test?id={circuit_breaker_name}
+```
 
 * Client -> FrontService(w/ Circuit Breaker) -> BackService
 * FrontService -> BackService 간의 Timeout은 3초
